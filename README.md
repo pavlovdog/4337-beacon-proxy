@@ -2,7 +2,7 @@
 
 This repo contains a set of Solidity smart contracts for implementing smart accounts, compatible with both beacon proxy pattern and ERC4337.
 
-Made by [fastfourier.eth](https://warpcast.com/fastfourier.eth). Thanks to [John Rising](https://twitter.com/johnrising_) for helping me in figuring out the rules and the limits of ERC4337.
+Made by [fastfourier.eth](https://warpcast.com/fastfourier.eth). Thanks to [John Rising](https://twitter.com/johnrising_) and [Hazim Jumali](https://twitter.com/hazimj_) for helping me in figuring out the rules and the limits of AA bundler.
 
 ## Overview
 
