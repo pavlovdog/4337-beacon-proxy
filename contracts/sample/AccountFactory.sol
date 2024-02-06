@@ -4,13 +4,11 @@ pragma solidity ^0.8.21;
 
 import { IAccountFactory } from "./../interfaces/sample/IAccountFactory.sol";
 import { IAccount } from "./../interfaces/sample/IAccount.sol";
+import { IAccountBeaconProxy } from "./../interfaces/sample/IAccountBeaconProxy.sol";
+import { AccountBeaconProxy } from "./AccountBeaconProxy.sol";
+
 import { IBeacon } from "./../interfaces/IBeacon.sol";
 import { IVersion } from "./../interfaces/utils/IVersion.sol";
-
-import { IAccountInitializer } from "./../interfaces/sample/IAccountInitializer.sol";
-import { IAccountBeaconProxy } from "./../interfaces/sample/IAccountBeaconProxy.sol";
-import { AccountInitializer } from "./AccountInitializer.sol";
-import { AccountBeaconProxy } from "./AccountBeaconProxy.sol";
 
 import { IEntryPoint } from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 
@@ -103,7 +101,7 @@ contract AccountFactory is IAccountFactory, IBeacon, OwnableUpgradeable {
     );
 
     bytes memory initData = abi.encodeWithSelector(
-      IAccountInitializer.initialize.selector,
+      IAccount.initialize.selector,
       accountOwner
     );
 

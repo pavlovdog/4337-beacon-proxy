@@ -8,4 +8,8 @@ import {
 
 interface IAccount is IVersion {
   error InvalidSender();
+
+  function initialize(
+    address accountOwner
+  ) external;
 }

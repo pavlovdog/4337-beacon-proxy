@@ -7,10 +7,6 @@ import {
 } from "./../interfaces/sample/IAccount.sol";
 
 import {
-  IAccountInitializer
-} from "./../interfaces/sample/IAccountInitializer.sol";
-
-import {
   Initializable
 } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
@@ -27,15 +23,14 @@ contract Account is
   Initializable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
-  IAccount,
-  IAccountInitializer
+  IAccount
 {
   uint8 private immutable accountVersion;
   address public immutable entryPoint; 
 
   function initialize(
     address accountOwner
-  ) external override {
+  ) external override onlyInitializing {
     __Ownable_init(accountOwner);
   }
 
@@ -81,7 +76,6 @@ contract Account is
     uint256 value,
     bytes calldata func
   ) external onlyOwnerOrEntryPoint {
-    // _requireFromEntryPointOrOwner();
     _call(dest, value, func);
   }
 
@@ -97,16 +91,16 @@ contract Account is
     uint256[] calldata value,
     bytes[] calldata func
   ) external onlyOwnerOrEntryPoint {
-      require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
+    require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
 
-      if (value.length == 0) {
-        for (uint256 i = 0; i < dest.length; i++) {
-          _call(dest[i], 0, func[i]);
-        }
-      } else {
-        for (uint256 i = 0; i < dest.length; i++) {
-          _call(dest[i], value[i], func[i]);
-        }
+    if (value.length == 0) {
+      for (uint256 i = 0; i < dest.length; i++) {
+        _call(dest[i], 0, func[i]);
       }
+    } else {
+      for (uint256 i = 0; i < dest.length; i++) {
+        _call(dest[i], value[i], func[i]);
+      }
+    }
   }
 }

@@ -5,21 +5,6 @@
         "internalType": "address",
         "name": "__entrypoint",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "__implementation",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "__beaconOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "__payMaster",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -32,7 +17,28 @@
   },
   {
     "inputs": [],
+    "name": "EmptyImplementation",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidInitialization",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "currentVersion",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newVersion",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidVersion",
     "type": "error"
   },
   {
@@ -86,6 +92,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "ImplementationUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint64",
         "name": "version",
         "type": "uint64"
@@ -114,19 +133,6 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "accountInitializer",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint32",
@@ -137,19 +143,6 @@
     "name": "addStake",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "beacon",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -262,7 +255,25 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "implementation",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "__implementation",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "__owner",
@@ -303,6 +314,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "__implementation",
+        "type": "address"
+      }
+    ],
+    "name": "setImplementation",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -33,6 +33,12 @@ const config: HardhatUserConfig = {
       accounts: {
         mnemonic: process.env.MNEMONIC,
       },
+      verify: {
+        etherscan: {
+          apiUrl: "https://api-sepolia.basescan.org",
+          apiKey: process.env.ETHERSCAN_API_KEY    
+        }
+      }
     },
   },
   verify: {
@@ -59,16 +65,16 @@ const config: HardhatUserConfig = {
     owner: {
       default: 4,
       sepolia: '0x0DE88BB60657B7Cabf35C160C52a4903b8271b54',
+      baseSepolia: '0x0DE88BB60657B7Cabf35C160C52a4903b8271b54',
     },
   },
   abiExporter: {
     path: './abi',
-    // clear: true,
+    clear: true,
     flat: true,
     only: [
       ':Account$',
       ':AccountFactory$',
-      ':AccountInitializer$',
       ':AccountBeaconProxy$',
     ],
     spacing: 2

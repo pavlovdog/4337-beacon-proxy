@@ -47,12 +47,12 @@ abstract contract BeaconProxy is
   }
 
   function initialize(
-    address _initializer,
+    address __implementation,
     bytes memory data
   ) external override initializer {
     ERC1967UtilsExtended.upgradeBeaconToAndCallInitializer(
       _beacon,
-      _initializer,
+      __implementation,
       data
     );
   }
