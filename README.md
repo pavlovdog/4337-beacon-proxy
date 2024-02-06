@@ -4,7 +4,6 @@ This repo contains a set of Solidity smart contracts for implementing smart acco
 
 Made by [fastfourier.eth](https://warpcast.com/fastfourier.eth). Thanks to [John Rising](https://twitter.com/johnrising_) for helping me in figuring out the rules and the limits of ERC4337.
 
-![alt text](./assets/cover.png)
 ## Overview
 
 Using a beacon proxy within the ERC4337 compatible system may be tricky since the naive implementation will violate the ERC rules in multiple ways. At the same time, there are scenarios where the ability to upgrade smart accounts is crucial.
