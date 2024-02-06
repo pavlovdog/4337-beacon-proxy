@@ -15,11 +15,15 @@ import {
 } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import {
+  OwnableUpgradeable
+} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import {
   UserOperation
 } from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
 
 
-contract AccountBeaconProxy is BeaconProxy {
+contract AccountBeaconProxy is BeaconProxy, OwnableUpgradeable {
   using MessageHashUtils for bytes32;
   using ECDSA for bytes32;
 
@@ -34,7 +38,7 @@ contract AccountBeaconProxy is BeaconProxy {
   ) internal override virtual returns (uint256 validationData) {
     bytes32 hash = userOpHash.toEthSignedMessageHash();
 
-    if (address(0) != hash.recover(userOp.signature)) return SIG_VALIDATION_FAILED;
+    if (owner() != hash.recover(userOp.signature)) return SIG_VALIDATION_FAILED;
 
     return 0;
   }

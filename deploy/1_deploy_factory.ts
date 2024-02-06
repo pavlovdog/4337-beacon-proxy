@@ -20,6 +20,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await deployments.deploy('AccountFactory', {
     from: deployer,
     log: true,
+    proxy: {
+      proxyContract: 'OpenZeppelinTransparentProxy',
+      execute: {
+        methodName: 'initialize',
+        args: [
+          owner,
+        ]
+      }
+    },
     args: [
       entrypoint,
       account.address,

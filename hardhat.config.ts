@@ -7,8 +7,7 @@ import "@nomicfoundation/hardhat-viem";
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer";
 import "@nomicfoundation/hardhat-verify";
-// import "hardhat-abi-exporter";
-// import "hardhat-storage-layout";
+import "hardhat-abi-exporter";
 
 import "dotenv/config";
 
@@ -23,6 +22,12 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {},
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL || '',
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+    },
   },
   verify: {
     etherscan: {
@@ -42,19 +47,11 @@ const config: HardhatUserConfig = {
     paymaster: {
       default: '0xE93ECa6595fe94091DC1af46aaC2A8b5D7990770'
     },
-    bank: {
-      // Binance
-      // https://optimistic.etherscan.io/address/0xacD03D601e5bB1B275Bb94076fF46ED9D753435A
-      default: '0xacD03D601e5bB1B275Bb94076fF46ED9D753435A',
-    },
     usdc: {
       // https://optimistic.etherscan.io/address/0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85
       default: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
       // https://docs.stackup.sh/docs/supported-erc-20-tokens#ethereum-sepolia
       sepolia: '0x3870419Ba2BBf0127060bCB37f69A1b1C090992B',
-    },
-    eth: {
-      default: '0x1111111111111111111111111111111111111111'
     },
     alice: {
       default: 2,
@@ -64,11 +61,21 @@ const config: HardhatUserConfig = {
     },
     owner: {
       default: 4,
-    }
+      sepolia: '0x0DE88BB60657B7Cabf35C160C52a4903b8271b54',
+    },
   },
-  // gasReporter: {
-  //   enabled: true,
-  // }
+  abiExporter: {
+    path: './abi',
+    // clear: true,
+    flat: true,
+    only: [
+      ':Account$',
+      ':AccountFactory$',
+      ':AccountInitializer$',
+      ':AccountBeaconProxy$',
+    ],
+    spacing: 2
+  }
 };
 
 export default config;

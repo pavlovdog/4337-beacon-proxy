@@ -76,7 +76,7 @@ describe('Test sample account', async () => {
         from: deployer,
         log: true,
         args: [
-          1, // account version
+          1, // new account version
           entrypoint
         ]
       });
