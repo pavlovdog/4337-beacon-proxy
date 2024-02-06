@@ -28,6 +28,12 @@ const config: HardhatUserConfig = {
         mnemonic: process.env.MNEMONIC,
       },
     },
+    baseSepolia: {
+      url: process.env.BASE_SEPOLIA_RPC_URL || '',
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+    },
   },
   verify: {
     etherscan: {
@@ -43,15 +49,6 @@ const config: HardhatUserConfig = {
     },
     entrypoint: {
       default: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
-    },
-    paymaster: {
-      default: '0xE93ECa6595fe94091DC1af46aaC2A8b5D7990770'
-    },
-    usdc: {
-      // https://optimistic.etherscan.io/address/0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85
-      default: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
-      // https://docs.stackup.sh/docs/supported-erc-20-tokens#ethereum-sepolia
-      sepolia: '0x3870419Ba2BBf0127060bCB37f69A1b1C090992B',
     },
     alice: {
       default: 2,

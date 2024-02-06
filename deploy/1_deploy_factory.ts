@@ -11,7 +11,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {
     deployer,
     entrypoint,
-    paymaster,
     owner
   } = await getNamedAccounts();
 
@@ -25,15 +24,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       execute: {
         methodName: 'initialize',
         args: [
+          account.address,
           owner,
         ]
       }
     },
     args: [
       entrypoint,
-      account.address,
-      owner,
-      paymaster
     ]
   });
 }

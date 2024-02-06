@@ -85,12 +85,9 @@ describe('Test sample account', async () => {
     });
 
     it('Upgrade implementation in beacon', async () => {
-      const beaconAddress = await factory.beacon();
-      const beacon = await ethers.getContractAt('Beacon', beaconAddress);
-
       const owner = await ethers.getNamedSigner('owner');
 
-      await beacon.connect(owner).setImplementation(newAccount.target);
+      await factory.connect(owner).setImplementation(newAccount.target);
     });
 
     it('Check new version', async () => {

@@ -4,11 +4,13 @@ pragma solidity ^0.8.21;
 
 import { IAccountFactory } from "./../interfaces/sample/IAccountFactory.sol";
 import { IAccount } from "./../interfaces/sample/IAccount.sol";
+import { IBeacon } from "./../interfaces/IBeacon.sol";
+import { IVersion } from "./../interfaces/utils/IVersion.sol";
+
 import { IAccountInitializer } from "./../interfaces/sample/IAccountInitializer.sol";
 import { IAccountBeaconProxy } from "./../interfaces/sample/IAccountBeaconProxy.sol";
 import { AccountInitializer } from "./AccountInitializer.sol";
 import { AccountBeaconProxy } from "./AccountBeaconProxy.sol";
-import { Beacon } from "./../Beacon.sol";
 
 import { IEntryPoint } from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 
@@ -18,49 +20,66 @@ import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/O
 import { Clones } from "@openzeppelin/contracts/proxy/Clones.sol";
 
 
-contract AccountFactory is IAccountFactory, OwnableUpgradeable {
+contract AccountFactory is IAccountFactory, IBeacon, OwnableUpgradeable {
   IEntryPoint internal immutable _entryPoint;
-  Beacon internal immutable _beacon;
-  AccountInitializer internal immutable _accountInitializer;
-  AccountBeaconProxy internal immutable _beaconProxy;
+  AccountBeaconProxy internal _beaconProxy;
   address internal immutable _payMaster;
 
+  address internal _implementation;
+
   constructor(
-    address __entrypoint,
-    address __implementation,
-    address __beaconOwner,
-    address __payMaster
+    address __entrypoint
   ) {
     _entryPoint = IEntryPoint(__entrypoint);
-    _beacon = new Beacon(__implementation, __beaconOwner);
-    _accountInitializer = new AccountInitializer();
-
-    _beaconProxy = new AccountBeaconProxy(
-      address(_beacon),
-      __entrypoint
-    );
-
-    _payMaster = __payMaster;
 
     _disableInitializers();
   }
 
   function initialize(
+    address __implementation,
     address __owner
   ) external initializer {
+    _setImplementation(__implementation);
+
+    _beaconProxy = new AccountBeaconProxy(
+      address(this),
+      address(_entryPoint)
+    );
+
     __Ownable_init(__owner);
+  }
+
+  function _setImplementation(
+    address __implementation
+  ) internal {
+    if (__implementation.code.length == 0) {
+      revert EmptyImplementation();
+    }
+
+    _implementation = __implementation;
+
+    emit ImplementationUpdated(__implementation);
+  }
+
+  function setImplementation(
+    address __implementation
+  ) external override onlyOwner {
+    uint currentVersion = IVersion(_implementation).version();
+    uint newVersion = IVersion(__implementation).version();
+
+    if (newVersion <= currentVersion) {
+      revert InvalidVersion(currentVersion, newVersion);
+    }
+
+    _setImplementation(__implementation);
+  }
+
+  function implementation() external override view returns (address) {
+    return _implementation;
   }
 
   function entryPoint() external override view returns (address) {
     return address(_entryPoint);
-  }
-
-  function beacon() external override view returns (address) {
-    return address(_beacon);
-  }
-
-  function accountInitializer() external override view returns (address) {
-    return address(_accountInitializer);
   }
 
   function beaconProxy() external override view returns (address) {
@@ -89,7 +108,7 @@ contract AccountFactory is IAccountFactory, OwnableUpgradeable {
     );
 
     IAccountBeaconProxy(account).initialize(
-      address(_accountInitializer),
+      _implementation,
       initData
     );
 

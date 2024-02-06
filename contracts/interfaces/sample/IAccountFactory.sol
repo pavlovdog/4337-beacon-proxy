@@ -15,7 +15,5 @@ interface IAccountFactory {
 
   function payMaster() external view returns (address);
   function beaconProxy() external view returns (address);
-  function accountInitializer() external view returns (address);
-  function beacon() external view returns (address);
   function entryPoint() external view returns (address);
 }

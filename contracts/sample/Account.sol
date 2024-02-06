@@ -7,6 +7,10 @@ import {
 } from "./../interfaces/sample/IAccount.sol";
 
 import {
+  IAccountInitializer
+} from "./../interfaces/sample/IAccountInitializer.sol";
+
+import {
   Initializable
 } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
@@ -23,10 +27,17 @@ contract Account is
   Initializable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
-  IAccount
+  IAccount,
+  IAccountInitializer
 {
   uint8 private immutable accountVersion;
   address public immutable entryPoint; 
+
+  function initialize(
+    address accountOwner
+  ) external override {
+    __Ownable_init(accountOwner);
+  }
 
   modifier onlyOwnerOrEntryPoint() {
     if (msg.sender != entryPoint && msg.sender != owner()) {
